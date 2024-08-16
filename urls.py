@@ -1,38 +1,27 @@
-from django.urls import path,include
-from . import views
+"""opnoobweb URL Configuration
 
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/3.0/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path,include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('',views.home,name="home"),#done
-    path('account/',include([
-        path('login',views.login),#done
-        path('register',views.register),#done
-        path('logout',views.logout),#done
-        path('<str:username>/dashboard',views.profilebasic),
-        path('<str:username>/feed',views.profilefeed),
-        path('<str:username>/interest',views.profileinterest),
-        path('ajex/<str:username>/interest/loadtag',views.profileloadtag),
-        path('ajex/<str:username>/interest/updatetag',views.profileloadupdatetag),
-        path('<str:username>/articles',views.profilearticles),
-        path('<str:username>/editprofile',views.profileedit),
-        path('<str:sender>/<str:reciver>/sendmessage',views.sendmessage),
-        path('<str:username>/viewmessage',views.readmessage),
-        path('sendemailtoallusers',views.sendemailtoallusers)
-    ])),
-    path('ajex/account/register/<username>',views.checkforavailableusername),#done
-    path('community',views.community),#done
-    path('community/addquestion',views.addquestion),#done
-    path('community/tag/<str:qtag>',views.communitytags),
-    path('ajex/community/question/solution/<id>',views.questionsolution),#done
-    path('ajex/community/question/like/<id>',views.questionlike),#done
-    path('ajex/community/question/dislike/<id>',views.questiondislike),#done
-    path('ajex/community/question/solutionpost',views.questionsolutionpost),#done
-    path('subject/<subjectname>',views.subjectdetails),#done
-    path('subject/<subjectname>/<topicid>',views.subjecttopic),#done
-    path('topics/tags/<tag>',views.topictagtopicslist),#done
-    path('topics/tags/<tag>/<topicid>',views.topictagtopic),#done
-    path('ajex/topic/comments/view/<id>',views.topiccommentsview),#done
-    path('ajex/topic/comments/write',views.topiccommentswrite),#done
-    path('ajex/like/topic/<id>',views.liketopic,name="liketopic"),#done
-    path('ajex/dislike/topic/<id>',views.disliketopic,name="liketopic")#done
-]
+    path('',include("account.urls")),
+    path('courses/',include("material.urls")),
+    path('practice/',include("practice.urls")),
+    path('articles/',include("article.urls")),
+    path('admin/', admin.site.urls),
+]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
